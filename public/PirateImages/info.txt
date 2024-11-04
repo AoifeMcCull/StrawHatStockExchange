@@ -1,0 +1,29 @@
+1	Donquixote Doflamingo
+2	Trebol
+3	Sugar
+4	Luffy
+5	Zoro
+6	Sanji
+7	Linlin
+8	Katakuri
+9	Edward Newgate
+10	Marco
+11	Portgas D. Ace
+12	Diamond Jozu
+13	Vista
+14	Marshall D. Teach
+15	Jesus Burgess
+16	Shiryu
+17	Van Augur
+18	Lafitte
+19	Buggy
+20	Crocodile
+21	Dracule Mihawk
+22	Kaido
+23	King
+24	Queen
+25	Jack
+26	Shanks
+27	Benn Beckman
+28	Lucky Roux
+29	Yasopp
