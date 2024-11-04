@@ -1,0 +1,34 @@
+.pirateModal {
+    display: flex; /* Use flexbox to center the modal */
+    position: fixed; /* Position fixed to stay in the viewport */
+    z-index: 1000; /* High z-index to ensure it appears above other content */
+    left: 0;
+    top: 0;
+    width: 100%; /* Cover full width */
+    height: 100%; /* Cover full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    justify-content: center; /* Center the modal horizontally */
+    align-items: center; /* Center the modal vertically */
+}
+
+
+.modal-content {
+    background-color: #fefefe; /* Background color for modal content */
+    padding: 20px;
+    border: 1px solid #888; /* Optional border */
+    border-radius: 5px; /* Optional rounded corners */
+    width: 80%; /* Adjust width as needed */
+    max-width: 600px; /* Optional max width */
+}
+
+.close {
+    color: #aaa; /* Close button color */
+    float: right; /* Position close button to the right */
+    font-size: 28px; /* Font size for close button */
+    font-weight: bold; /* Make it bold */
+    cursor: pointer; /* Change cursor on hover */
+}
+.close:hover,
+.close:focus {
+    color: black; /* Change color on hover */
+}

@@ -1,12 +1,11 @@
-//TODO: react prop pass with pirate id
 //TODO: pirate images
 import './PirateCard.css'
-import BerryIcon from '../BerryIcon';
+import PirateModal from '../PirateModal/PirateModal';
 function PirateCard(props){
-
+    const imageUrl = `/PirateImages/${props.id}.png`;
     return(
-        <div className='pirateCardDiv'>
-            <img src='/luffy.png'></img>
+        <div className='pirateCardDiv' onClick={() => props.onClick()}>
+            <img src={imageUrl}></img>
             <div className='pirateCardTextContainer'>
                 <h2 className='pirateName'>{props.name}</h2>
                 <h3 className='priceDisplay'>

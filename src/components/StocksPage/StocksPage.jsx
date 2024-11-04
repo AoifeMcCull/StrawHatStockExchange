@@ -2,10 +2,15 @@ import axios from 'axios';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import PirateCard from '../PirateCard/PirateCard.jsx'
+import PirateModal from '../PirateModal/PirateModal.jsx';
 import './StocksPage.css'
+
+
 function StocksPage() {
     const [pirateRows, setPirateRows] = useState([])
     const [loading, setLoading] = useState(true);
+    const [selectedPirate, setSelectedPirate] = useState(null);
+    const [isModalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         fetchPirateRows()
@@ -21,6 +26,16 @@ function StocksPage() {
         }
     }
 
+    const openModal = (pirate) => {
+        (setSelectedPirate(pirate));
+        setModalOpen(true);
+    } 
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setSelectedPirate(null);
+    }
+
   if(loading) {
     return(<div>Loading,,,</div>)
   }
@@ -33,11 +48,19 @@ function StocksPage() {
             //<li> {pirateRow.pirateid}, {pirateRow.piratename}, {pirateRow.price}</li>
             <PirateCard 
                 key={pirateRow.pirateid}
+                id={pirateRow.pirateid}
                 name={pirateRow.piratename}
                 price={pirateRow.price}
-                crew={pirateRow.crewname}/>
+                crew={pirateRow.crewname}
+                onClick={() => openModal(pirateRow)}/>
         ))}
       </div>
+
+      <PirateModal
+        isOpen={isModalOpen}
+        pirate={selectedPirate}
+        onClose={closeModal}
+        />
     </div>
   );
 }
