@@ -1,12 +1,8 @@
 import axios from 'axios';
 import React from 'react';
 import { useEffect, useState } from 'react';
-
-// This is one of our simplest components
-// It doesn't have local state,
-// It doesn't dispatch any redux actions or display any part of redux state
-// or even care what the redux state is'
-
+import PirateCard from '../PirateCard/PirateCard.jsx'
+import './StocksPage.css'
 function StocksPage() {
     const [pirateRows, setPirateRows] = useState([])
     const [loading, setLoading] = useState(true);
@@ -31,10 +27,15 @@ function StocksPage() {
 
   return (
     <div className="container">
-      <div>
+      <div className = "pirateGrid">
         {console.log(pirateRows)}
         {pirateRows.map((pirateRow) => (
-            <li> {pirateRow.pirateid}, {pirateRow.piratename}, {pirateRow.price}</li>
+            //<li> {pirateRow.pirateid}, {pirateRow.piratename}, {pirateRow.price}</li>
+            <PirateCard 
+                key={pirateRow.pirateid}
+                name={pirateRow.piratename}
+                price={pirateRow.price}
+                crew={pirateRow.crewname}/>
         ))}
       </div>
     </div>

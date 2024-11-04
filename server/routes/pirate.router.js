@@ -16,9 +16,11 @@ SELECT
   p.pirateId,
   p.pirateName,
   t.price,
-  t.transactionDateTime
+  t.transactionDateTime,
+  c.crewName
 FROM pirate p
 JOIN transactions t ON p.pirateId = t.pirateId
+JOIN crew c on p.crewId = c.crewId
 WHERE t.transactionDateTime = (
   SELECT MAX(transactionDateTime)
     FROM transactions t2

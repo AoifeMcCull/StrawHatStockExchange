@@ -1,0 +1,28 @@
+.pirateCardDiv {
+    background-color: #f8f9fa;  /* Light gray background */
+    border-radius: 8px;         /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+    padding: 16px;
+    transition: transform 0.2s ease;  /* Smooth hover effect */
+}
+.priceDisplay {
+    color: #79c779;
+    margin-bottom: 0px;
+}
+
+.pirateCardTextContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0px;
+}
+.pirateName{
+    margin-bottom: 0px;
+}
+
+.crewName{
+    margin-top: 0px;
+}
+.berrySymbol {
+    filter: brightness(0) saturate(100%) hue-rotate(120deg);
+}
