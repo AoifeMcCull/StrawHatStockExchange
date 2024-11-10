@@ -1,0 +1,28 @@
+.aboutPageText {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 10px;
+    max-width: 60%;
+    margin: auto;
+}
+
+.aboutPageZoro {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 20%;
+    margin-top: 150px;
+    margin: auto;
+    text-align: center;
+}
+.aboutPageP {
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+.aboutImage {
+    display: block;
+    margin: auto;
+    margin-top: 25px;
+    justify-content: center;
+}

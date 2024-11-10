@@ -20,8 +20,10 @@ import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import StocksPage from '../StocksPage/StocksPage';
+import UserPortfolioPage from '../Portfolio/UserPortfolioPage.jsx'
 
 import './App.css';
+import LeaderboardPage from '../Leaderboard/Leaderboardpage';
 
 function App() {
   const dispatch = useDispatch();
@@ -38,7 +40,7 @@ function App() {
         <Nav />
         <Switch>
           {/* Visiting localhost:5173 will redirect to localhost:5173/home */}
-          <Redirect exact from="/" to="/home" />
+          <Redirect exact from="/" to="/stocks" />
 
           {/* Visiting localhost:5173/about will show the about page. */}
           <Route
@@ -52,10 +54,18 @@ function App() {
             exact
             path="/stocks"
           >
-            //TODO: make this the main page
             <StocksPage />
           </Route>
-
+          <Route
+            exact path="/leaderboards"
+            >
+              <LeaderboardPage />
+          </Route>
+          <Route 
+            exact path="/portfolio/:userid"
+            component={UserPortfolioPage}
+            >
+            </Route>
           {/* For protected routes, the view could show one of several things on the same route.
             Visiting localhost:5173/user will show the UserPage if the user is logged in.
             If the user is not logged in, the ProtectedRoute will show the LoginPage (component).
@@ -83,7 +93,7 @@ function App() {
             {user.id ?
               // If the user is already logged in, 
               // redirect to the /user page
-              <Redirect to="/user" />
+              <Redirect to={`/portfolio/${user.id}`} />
               :
               // Otherwise, show the login page
               <LoginPage />
@@ -97,7 +107,7 @@ function App() {
             {user.id ?
               // If the user is already logged in, 
               // redirect them to the /user page
-              <Redirect to="/user" />
+              <Redirect to={`/portfolio/${user.id}`} />
               :
               // Otherwise, show the registration page
               <RegisterPage />

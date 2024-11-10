@@ -21,16 +21,26 @@ router.post('/register', (req, res, next) => {
   const username = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
 
-  const queryText = `INSERT INTO "user" (username, password)
-    VALUES ($1, $2) RETURNING id`;
+  const queryText = `INSERT INTO "user" (name, password, balance, leaderboard_show)
+    VALUES ($1, $2, 1000, true) RETURNING id`;
+  const randomPirate = `insert INTO "user_pirate_inventory ()`
   pool
     .query(queryText, [username, password])
+    .then((result) => addRandomPirate(result.rows[0].id))
     .then(() => res.sendStatus(201))
     .catch((err) => {
       console.log('User registration failed: ', err);
       res.sendStatus(500);
     });
 });
+
+const addRandomPirate = (id) => {
+  const addRandomPirateQuery = `INSERT INTO "user_pirate_inventory" (userid, pirateid, amount)
+VALUES ($1, FLOOR(1 + (RANDOM() * 30)), 1);`
+  pool.query(addRandomPirateQuery, [id])
+}
+
+
 
 // Handles login form authenticate/login POST
 // userStrategy.authenticate('local') is middleware that we run on this route

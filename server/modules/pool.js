@@ -22,7 +22,7 @@ else {
     pool = new pg.Pool({
         host: 'localhost',
         port: 5432,
-        database: 'straw_hat_stock_exchange', 
+        database: 'sabaody_stock', 
     });
 }
 

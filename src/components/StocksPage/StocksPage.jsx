@@ -44,6 +44,7 @@ function StocksPage() {
     <div className="container">
       <div className = "pirateGrid">
         {console.log(pirateRows)}
+
         {pirateRows.map((pirateRow) => (
             //<li> {pirateRow.pirateid}, {pirateRow.piratename}, {pirateRow.price}</li>
             <PirateCard 

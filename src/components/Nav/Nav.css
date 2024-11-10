@@ -5,8 +5,9 @@
   align-items: center;
 
   margin: 0 0 30px;
-  background-color: #00acb0;
+  background-color: #002a2b;
   overflow: hidden;
+  padding: 0 20px;
 }
 
 .nav a {
@@ -24,7 +25,7 @@
 .navLink {
   display: inline-block;
   color: #f2f2f2;
-  background-color: #00acb0;
+  background-color: #002a2b;
   text-align: center;
   padding: 24px 10px;
   text-decoration: none;
@@ -39,4 +40,17 @@
 
 .navLink:hover {
   background-color: #008183;
+}
+
+.links {
+  display:flex;
+  order: 2;
+}
+
+.balanceDisplay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:#f2f2f2;
+  order: 1;
 }

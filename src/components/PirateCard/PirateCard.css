@@ -1,13 +1,28 @@
 .pirateCardDiv {
-    background-color: #f8f9fa;  /* Light gray background */
-    border-radius: 8px;         /* Rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
-    padding: 16px;
-    transition: transform 0.2s ease;  /* Smooth hover effect */
+    background-color: #d0d0d7; 
+    border-radius: 8px;           
+    box-shadow: 0 16px 16px rgba(0, 0, 0, 0.4); 
+    padding: 0;  
+    transition: transform 0.3s ease; 
+    overflow: hidden; 
+    display: flex;  
+    flex-direction: column;  
+
 }
+.pirateCardDiv:hover {
+    transform: scale(1.05);
+    background-color: #e0e0e7;
+}
+
+.pirateImage {
+    width: 256px;      
+    height: auto;     
+}
+
 .priceDisplay {
-    color: #79c779;
+    color: #4caf50;
     margin-bottom: 0px;
+    margin-right: 5px;
 }
 
 .pirateCardTextContainer{
@@ -18,11 +33,29 @@
 }
 .pirateName{
     margin-bottom: 0px;
+    margin-top: 10px;
+    margin-left: 8px;
+    max-width: 180px;
 }
 
 .crewName{
+    display: flex;
     margin-top: 0px;
+    margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    font-weight: 600;
 }
 .berrySymbol {
     filter: brightness(0) saturate(100%) hue-rotate(120deg);
+}
+
+.amount {
+    display: flex;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    font-weight: 600;
+    color:#2f6831
 }
