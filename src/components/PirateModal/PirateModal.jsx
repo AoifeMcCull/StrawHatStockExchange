@@ -1,6 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './PirateModal.css';
 import { useDispatch, useSelector } from "react-redux";
+import PirateChart from '../PirateChart/PirateChart'
+import axios from "axios";
 
 const PirateModal = ({ isOpen, pirate, onClose }) => {
     const dispatch = useDispatch();
@@ -8,9 +10,27 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
     const [amount, setAmount] = useState(0);
     const [errorMessage, setErrorMessage] = useState(null);
     const [previewData, setPreviewData] = useState(null);
+    const [chartData, setChartData] = useState([]);
     const user = useSelector((store) => store.user);
-    if (!isOpen) return null;
-    () => console.log('opened Modal!', pirate, isOpen)
+    
+
+
+    const fetchChartData = () => {
+        axios.post(`/api/transactions/piratehistory/`, {pirateid: pirate.pirateid})
+        .then(response => {
+            setChartData(response.data);
+        })
+        .catch(err => {
+            console.log('error getting chart data!', err)
+        })
+    }
+    
+    useEffect(() => {
+        if(isOpen && pirate){
+            fetchChartData();
+        }
+        
+    }, [isOpen, pirate]);
 
     const handleAmountChange= (event) => {
         const value = event.target.value;
@@ -105,11 +125,17 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
         }
     }
 
+    if (!isOpen) return null;
+
     return (
         
         <div className="pirateModal">
             <div className="modal-content">
-                <span className="close" onClick={handleClose}>&times;</span>
+                
+                <div className="chart-container">
+                    <PirateChart data = {chartData}></PirateChart>
+                </div>
+                <div className="text-content">
                 <h2>{pirate.piratename}</h2>
                 <p>Price: {pirate.price}</p>
                 <p>Crew: {pirate.crewname}</p>
@@ -129,17 +155,19 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
                     {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
                 </div>
                 <div>
-                    <button onClick={() => fetchMarketOrderPreview(true)}>
-                        Preview Market Buy Order
+                    <button className='buyButton' onClick={() => fetchMarketOrderPreview(true)}>
+                        Market Buy
                     </button>
-                    <button onClick={() => fetchMarketOrderPreview(false)}>
-                        Preview Market Sell Order
+                    <button className='sellButton' onClick={() => fetchMarketOrderPreview(false)}>
+                        Market Sell
                     </button>
                 </div>
                 </div>
                 )}
                 </div>
                 
+                
+                </div>
                 {previewData && (
                     <div className="previewDialog">
                         <h3>Preview Order</h3>
@@ -148,15 +176,16 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
                         
                         <div>
                             {/* Button to confirm the order */}
-                            {previewData.buysell && <button onClick={() => placeMarketOrder(true)}>
+                            {previewData.buysell && <button className='buyButton' onClick={() => placeMarketOrder(true)}>
                                 Confirm Market Buy Order
                             </button> }
-                            {!previewData.buysell && <button onClick={() => placeMarketOrder(false)}>
+                            {!previewData.buysell && <button className='sellButton'onClick={() => placeMarketOrder(false)}>
                                 Confirm Market Sell Order
                             </button>}
                         </div>
                     </div>
                 )}
+                <span className="close" onClick={handleClose}>&times;</span>
             </div>
         </div>
     );

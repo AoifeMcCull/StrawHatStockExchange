@@ -52,6 +52,18 @@ router.get('/highestbuy', (req, res) => {
       console.log('router: Get highest buy failed: ', err);
       res.sendStatus(500);
     });
+});
+
+router.post('/piratehistory', (req, res) => {
+  console.log('getting history for pirate', req.body.pirateid);
+  const queryText = `select transactionid, price from transactions t where t.pirateid = $1 ORDER BY transactionid`;
+  pool.query(queryText, [req.body.pirateid])
+  .then(
+    (result) => {
+      console.log(result.rows);
+      res.send(result.rows);
+    }
+  )
 })
 
 router.post('/newlimitorder', (req, res) => {

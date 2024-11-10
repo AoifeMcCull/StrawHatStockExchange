@@ -1,34 +1,108 @@
 .pirateModal {
-    display: flex; /* Use flexbox to center the modal */
-    position: fixed; /* Position fixed to stay in the viewport */
-    z-index: 1000; /* High z-index to ensure it appears above other content */
+    display: flex;
+    position: fixed;
+    z-index: 1000;
     left: 0;
     top: 0;
-    width: 100%; /* Cover full width */
-    height: 100%; /* Cover full height */
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    justify-content: center; /* Center the modal horizontally */
-    align-items: center; /* Center the modal vertically */
+    justify-content: center;
+    align-items: center;
 }
 
-
 .modal-content {
-    background-color: #e0e0e7; /* Background color for modal content */
+    background-color: #e0e0e7;
     padding: 20px;
-    border: 1px solid #888; /* Optional border */
-    border-radius: 5px; /* Optional rounded corners */
-    width: 80%; /* Adjust width as needed */
-    max-width: 600px; /* Optional max width */
+    border: 1px solid #888;
+    border-radius: 5px;
+    display: flex; /* Use flexbox for the layout */
+    flex-direction: row; /* Place items horizontally */
+    max-width: 80%; /* Optional max width */
+}
+
+.chart-container {
+    flex: 1; /* Chart will take 1 part of the available space */
+    margin-right: 20px; /* Space between chart and text content */
+    width: 500px;
+    flex-grow: 4;
+    flex-shrink: 2;
+    background-color: #e9e9f2;
+    border-radius: 8px;
+}
+
+.main-content {
+    display: flex; /* Use flex to position text and preview dialog */
+    flex: 2; /* The text content and preview will take up the remaining space */
+    justify-content: space-between; /* Spread out the items */
+    width: 100%; /* Ensure it uses the full available width */
+}
+
+.text-content {
+    flex: 2; /* The text content takes 2 parts of the space */
+}
+
+.previewDialog {
+    flex: 3; /* Or flex-grow if you want it to grow within the available space */
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align content to the top */
+    max-height: 200px;  /* Adjust the max height */
+    overflow-y: auto; /* Allow vertical scrolling if content overflows */
+}
+
+.previewDialog h3 {
+    margin-bottom: 0px;
+}
+
+.preview-details {
+    margin-bottom: 0px;
+}
+
+.previewDialog button {
+    margin-top: 0px;
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button {
+    margin-top: 0px;
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.buyButton {
+    background-color: #4CAF50;
+}
+
+.sellButton {
+    background-color: #cb3131;
+}
+
+.previewDialog button:hover {
+    background-color: #45a049;
 }
 
 .close {
-    color: #aaa; /* Close button color */
-    float: right; /* Position close button to the right */
-    font-size: 28px; /* Font size for close button */
-    font-weight: bold; /* Make it bold */
-    cursor: pointer; /* Change cursor on hover */
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
 }
+
 .close:hover,
 .close:focus {
-    color: black; /* Change color on hover */
+    color: black;
 }
