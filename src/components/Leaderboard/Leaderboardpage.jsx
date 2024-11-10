@@ -20,7 +20,6 @@ const LeaderboardPage = () => {
     try {
         const mostLuffyResponse = await axios.get('/api/leaderboard/mostLuffy');
         setMostLuffy(mostLuffyResponse.data);
-        console.log('mostluffyresponse:', mostLuffyResponse.data);
     } catch (err) {
         console.error('Error fetching most Luffy leaderboard:', err);
     }

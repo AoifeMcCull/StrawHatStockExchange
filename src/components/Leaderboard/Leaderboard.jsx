@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Leaderboard = ({ title, data }) => {
-    console.log(data);
   if (!data || data.length === 0) {
     return (
       <div className="leaderboard">

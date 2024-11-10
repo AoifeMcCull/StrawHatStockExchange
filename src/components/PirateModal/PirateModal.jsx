@@ -2,10 +2,12 @@ import React, {useEffect, useState} from "react";
 import './PirateModal.css';
 import { useDispatch, useSelector } from "react-redux";
 import PirateChart from '../PirateChart/PirateChart'
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 const PirateModal = ({ isOpen, pirate, onClose }) => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const imageUrl = pirate? `/PirateImages/${pirate.pirateid}.png` : null
     const [amount, setAmount] = useState(0);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -64,6 +66,7 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
         buysell ? order.userBuyId = user.id : order.userSellId = user.id;
         !buysell ? order.userBuyId = null : order.userSellId = null;
         await axios.post('/api/transactions/newlimitorder', order);
+        buysell ? dispatch({type: 'SET_BALANCE', payload: user.balance - (price * amount)}) : console.log('a sell');
         handleClose();
     }
 
@@ -133,7 +136,9 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
 
             if(response.ok) {
                 const data = await response.json();
-                console.log('Market order placed successfully', data)
+                console.log('Market order placed successfully', data);
+                isBuyOrder ? dispatch({type: 'SET_BALANCE', payload: user.balance - (data.balanceTotal)}) : dispatch({type: 'SET_BALANCE', payload: user.balance + (data.balanceTotal)});
+                history.push('/stocks');
                 onClose();
             } else {
                 const errorData = await response.json();
@@ -169,8 +174,8 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
                     <input
                         type="number"
                         id="amount"
-                        value={price}
-                        onChange={handlePriceChange}
+                        value={amount}
+                        onChange={handleAmountChange}
                         min="1"
                         />
                     {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
@@ -188,9 +193,9 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
                 <div>
                 Limit Price:<input
                         type="number"
-                        id="amount"
-                        value={amount}
-                        onChange={handleAmountChange}
+                        id="price"
+                        value={price}
+                        onChange={handlePriceChange}
                         min="1"
                         />
                     <button className='buyButton' onClick={() => limitOrder(true)}>Limit Buy</button>
