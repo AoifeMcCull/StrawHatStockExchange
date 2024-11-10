@@ -14,7 +14,7 @@ const LineChart = ({ data }) => {
       chartRef.current.chartInstance.destroy();
     }
 
-    const transactionIds = data.map(item => item.transactionid);
+    const transactionIds = data.map(item => Date(item.transactiondatetime));
     const prices = data.map(item => item.price);
 
     const chart = new Chart(ctx, {
