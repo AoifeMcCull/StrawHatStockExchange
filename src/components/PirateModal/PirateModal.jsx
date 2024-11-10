@@ -10,6 +10,7 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
     const [amount, setAmount] = useState(0);
     const [errorMessage, setErrorMessage] = useState(null);
     const [previewData, setPreviewData] = useState(null);
+    const [price, setPrice] = useState(0);
     const [chartData, setChartData] = useState([]);
     const user = useSelector((store) => store.user);
     
@@ -40,10 +41,30 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
         } else { setErrorMessage('Please enter a positive whole number amount')};
     }
 
+    const handlePriceChange= (event) => {
+        const value = event.target.value;
+        if(!isNaN(value) && value >= 0){
+            setPrice(value);
+            setErrorMessage(null);
+        } else { setErrorMessage('Please enter a positive whole number price')};
+    }
+
     const handleClose = () => {
         setErrorMessage(null);
         setPreviewData(null);
         onClose();
+    }
+
+    const limitOrder = async (buysell) => {
+        const order = {
+            price: price,
+            amount: amount,
+            pirateId: pirate.pirateid,
+        }
+        buysell ? order.userBuyId = user.id : order.userSellId = user.id;
+        !buysell ? order.userBuyId = null : order.userSellId = null;
+        await axios.post('/api/transactions/newlimitorder', order);
+        handleClose();
     }
 
     const fetchMarketOrderPreview = async (isBuyOrder) => {
@@ -148,12 +169,13 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
                     <input
                         type="number"
                         id="amount"
-                        value={amount}
-                        onChange={handleAmountChange}
+                        value={price}
+                        onChange={handlePriceChange}
                         min="1"
                         />
                     {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
                 </div>
+
                 <div>
                     <button className='buyButton' onClick={() => fetchMarketOrderPreview(true)}>
                         Market Buy
@@ -162,6 +184,19 @@ const PirateModal = ({ isOpen, pirate, onClose }) => {
                         Market Sell
                     </button>
                 </div>
+
+                <div>
+                Limit Price:<input
+                        type="number"
+                        id="amount"
+                        value={amount}
+                        onChange={handleAmountChange}
+                        min="1"
+                        />
+                    <button className='buyButton' onClick={() => limitOrder(true)}>Limit Buy</button>
+                    <button className='sellButton' onClick={() => limitOrder(false)}>Limit Sell</button>
+                </div>
+
                 </div>
                 )}
                 </div>

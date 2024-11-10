@@ -56,7 +56,7 @@ router.get('/highestbuy', (req, res) => {
 
 router.post('/piratehistory', (req, res) => {
   console.log('getting history for pirate', req.body.pirateid);
-  const queryText = `select transactionid, price from transactions t where t.pirateid = $1 ORDER BY transactionid`;
+  const queryText = `select transactiondatetime, price from transactions t where t.pirateid = $1 AND is_closed = true ORDER BY transactiondatetime`;
   pool.query(queryText, [req.body.pirateid])
   .then(
     (result) => {
@@ -66,9 +66,49 @@ router.post('/piratehistory', (req, res) => {
   )
 })
 
-router.post('/newlimitorder', (req, res) => {
+router.post('/newlimitorder', async (req, res) => {
   console.log('adding new limit order:', req.body);
-  const queryText = `insert into transactions 
+  const isBuyOrder = req.body.userBuyId !== null;
+  switch(isBuyOrder){
+    case true:
+      const checkQuery = `
+        select balance from "user" where id=$1 
+      `;
+      const userBalanceRes = await pool.query(checkQuery, [req.body.userBuyId])
+      if(userBalanceRes.rowCount == 0 || userBalanceRes.rows[0].balance < (req.body.price * req.body.amount)){
+        res.status(422).json(`User balance is too low for limit buy! user has ${userBalanceRes.rows[0].balance} and needs ${req.body.price * req.body.amount}`);
+      }
+      else{ //user has enough balance to place order
+        const deductBalanceQ = `update "user" set balance = balance - $1 where id=$2`;
+        const insertOrderQ = `insert into transactions(userBuyId, userSellId, price, amount, pirateId, transactionDateTime, is_closed) values ($1, null, $2, $3, $4, CURRENT_TIMESTAMP, false)`; 
+        pool.query(deductBalanceQ, [req.body.price * req.body.amount, req.body.userBuyId])
+        .then(pool.query(insertOrderQ, [req.body.userBuyId, req.body.price, req.body.amount, req.body.pirateId])
+          .then(res.sendStatus(200))
+          .catch(err => {console.log('error with insert limit buy!!', err)})
+        )
+        .catch(err => {console.log('error with deducting balance for limit buy!!', err)})
+        
+      }
+      break;
+
+      case false:
+        const checkInvQuery = `select amount from user_pirate_inventory where userid = $1 and pirateid = $2`;
+        const invResult = await pool.query(checkInvQuery, [req.body.userSellId, req.body.pirateId]);
+        if(invResult.rowCount == 0 || invResult.rows[0].amount < req.body.amount){
+          res.status(422).json('User does not own enough of the pirate!');
+        }
+        else{
+            const deductPirateQ = `update user_pirate_inventory set amount = amount - $1 where userid = $2 and pirateid = $3`;
+            const insertOrderQ = `insert into transactions(userBuyId, userSellId, price, amount, pirateId, transactionDateTime, is_closed) values (null, $1, $2, $3, $4, CURRENT_TIMESTAMP, false)`;
+            pool.query(deductPirateQ, [req.body.amount, req.body.userSellId, req.body.pirateId])
+            .then(pool.query(insertOrderQ, [req.body.userSellId, req.body.price, req.body.amount, req.body.pirateId])
+              .then(res.sendStatus(200))
+              .catch(err => {console.log('error inserting limit sell order!', err)})
+            .catch(err => {console.log('error deducting pirate!', err); res.status(422)}))
+        }
+        break;
+  }
+  /*const queryText = `insert into transactions 
   (userBuyId, userSellId, price, amount, pirateId, transactionDateTime, is_closed)
   values
   (
@@ -82,6 +122,7 @@ router.post('/newlimitorder', (req, res) => {
       console.log('router: post order failed: ', err);
       res.sendStatus(500);
     });
+    */
 })
 
 router.post('/marketorder/preview', async (req, res) => {
